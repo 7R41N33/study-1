@@ -6,11 +6,16 @@ require_relative './my_app'
 
 class RackTest < Test::Unit::TestCase
   def test_it_says_hello_world
-    omit do
-      browser = Rack::Test::Session.new(Rack::MockSession.new(Inatra))
-      browser.get '/hello'
-      assert browser.last_response.ok?
-      assert_equal 'Hello World', browser.last_response.body
-    end
+    browser = Rack::Test::Session.new(Rack::MockSession.new(Inatra))
+    browser.get '/hello'
+    assert browser.last_response.ok?
+    assert_equal 'Hello World', browser.last_response.body
+  end
+
+  def test_if_route_is_not_exist
+    browser = Rack::Test::Session.new(Rack::MockSession.new(Inatra))
+    browser.get '/hello404'
+    assert browser.last_response.not_found?
+    assert_equal 'Not found', browser.last_response.body
   end
 end
